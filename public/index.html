@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Chat App</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script> -->
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+</head>
+<body>
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<form class="form-inline" style="text-align:center; margin-top:50px;">
+						<div class="form-group col-sm-4" id="msgarea">
+						<input type="text" class="form-control" id="msgbox" style="width:100%" placeholder="Enter Message">
+						</div>
+						<div class="col-sm-4">
+							<button type="submit" class="btn btn-primary" id="msgsend">Send</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section >
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12" style="text-align:center;margin-top:150px;">
+					<ul id="msglist" class="list-group" ></ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+	var socket = io.connect();
+	
+	$('#msgsend').click(function(e){
+		e.preventDefault();
+		var msgbox = $('#msgbox').val();
+
+		socket.emit('message', msgbox);
+		$('#msgbox').val('');		
+
+	});
+
+	socket.on('show message', function(msg){
+		$('#msglist').append('<li class="list-group-item">' + msg + '</li>');
+		});
+	
+</script>
